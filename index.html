@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>To Do List</title>
+        <meta charset="utf-8">
+        <!-- Compiled and minified CSS -->
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+        <link rel="stylesheet" href="style.css">
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="todo-app-name">To Do App</h1>
+            <div id="app" class="todo-main-c">
+                <input v-model="newTodoText" type="text"
+                placeholder="Mysaly: Ui tapsyrmasyn oryndau;"
+                @keyup.enter="addingTask(newTodoText)" class="">
+
+                <ol class="collection">
+                    <li v-for="todo in allTasks" class="collection-item" v-bind:id="todo.id"
+                    v-bind:class="{ completed_task: (checked_tasks.includes(todo))}">
+                        <label class="container">
+                            <input type="checkbox" v-bind:id="todo.id" v-bind:value="todo" v-model="checked_tasks">
+                            <span class="checkmark"></span>
+                        </label>
+                        {{ todo.task }}
+                        <button class='waves-effect waves-light btn todo-remove' v-on:click='removeTask(todo)'>x</button>
+                    </li>
+                </ol>
+                <span>Checked names: {{ checked_tasks }}</span>
+                <div class="collection">
+                    <p class="collection-item">
+                        <i v-on:click="moveToTrash(checked_tasks)" class="material-icons cursor_d">delete</i>
+                        <i v-on:click="sortTasks(allTasks)" class="material-icons cursor_d">sort</i>
+                        <button class="waves-effect waves-light btn-small activeBtn disabled" v-on:click="showAllTasks(allTasks)">ALL</button>                        
+                        <button class="waves-effect waves-light btn-small" v-on:click="showCompletedTasks(checked_tasks)">COMPLETED</button>
+                        <button class="waves-effect waves-light btn-small" v-on:click="showActiveTasks(checked_tasks)">ACTIVE</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!-- production version, optimized for size and speed -->
+        <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+        <script src="index.js" type="module"></script>
+    </body>
+</html>

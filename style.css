@@ -1,0 +1,59 @@
+.todo-app-name {
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* .todo-main-c {
+    text-align: center;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 40rem;
+    height: 30rem;
+    background: #D8AE02;
+    margin: 0 auto;
+    margin-top: 50px;
+    /* border-radius: 10px; */
+    /* overflow-y: scroll;
+    overflow-x: hidden;
+    max-width: 100%;
+} */ 
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+.todo-input {
+    border-radius: 0px;
+    border: 2px solid #000;
+}
+
+.todo-remove {
+    float: right;
+    position: relative;
+    bottom: 6px;
+}
+
+.todo-completed {
+    /* position: relative; */
+    float: left;
+    vertical-align: middle;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+}
+
+.completed_task {
+    text-decoration: line-through;
+}
+
+.cursor_d {
+    cursor: pointer;
+}
+
+.activeBtn {
+    background-color: #b9f6ca;
+}
