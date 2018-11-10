@@ -28,11 +28,15 @@ var app = new Vue({
     data: {
         newTodoText:"",
         allTasks: todoStorage.fetch(), 
-        tasks: todoStorage.fetch(),
+        tasks: [],
         isChecked: true,
         isSorted:false,
+        isPressedBtn:'',
         checked_tasks:[],
         nextTodoId:3,
+        idDefine: 10000 ,
+        editedWord: "",
+        counter: 0,
     },
     methods: {
         addingTask: function(t) {
@@ -46,9 +50,9 @@ var app = new Vue({
         },
         removeTask: function(task) {
             console.log("remove is pressed!")
-            this.tasks.splice(this.tasks.indexOf(task), 1);
-            todoStorage.save(this.tasks);
-            console.log(this.tasks);
+            this.tasks.splice(this.allTasks.indexOf(task), 1);
+            todoStorage.save(this.allTasks);
+            console.log(this.allTasks);
         },
         moveToTrash: function(ch_tasks){
             var tAfterRemovingComplT = this.allTasks.filter(function(element) {
@@ -56,22 +60,27 @@ var app = new Vue({
             });
             this.allTasks = tAfterRemovingComplT;
             this.checked_tasks = [];    
-            todoStorage.save(this.tasks);
+            todoStorage.save(this.allTasks);
             
         },
-        checkingChb: function(todo) {
-            if(this.checked_tasks.includes(todo.id)){
-                var i;
-                for(i=0; i < this.checked_tasks.length; i++){
-                    console.log(this.checked_tasks[i]);
-                    this.checked_tasks.splice(i,1);
-                }
+        filterTheActives: function(todo) {
+            if (this.checked_tasks.includes(todo)){
+                this.checked_tasks.splice(this.checked_tasks.indexOf(todo),1);
+                this.tasks.push(todo);
             }
             else{
-                this.checked_tasks.push({
-                    id:todo.id,
-                });
+                this.checked_tasks.push(todo);
+                this.tasks.splice(this.tasks.indexOf(todo),1);
             }
+            // this.checked_tasks.push(todo);
+            console.log(this.checked_tasks);
+            var ch_t = this.checked_tasks;
+            var filteredActive = this.allTasks.filter(function(element) {
+                return ch_t.indexOf(element) === -1;
+            });
+            this.tasks = filteredActive;
+            console.log("After checking chB:", this.tasks);
+            // this.checked_tasks = [];
         },
         sortTasks: function(tasks){
             this.isSorted = !this.isSorted
@@ -109,22 +118,49 @@ var app = new Vue({
             
         },
         showCompletedTasks:function(ch_t){
-            this.tasks = ch_t;
+            this.isPressedBtn = 2;
+
         },
         showActiveTasks:function(ch_t){
-            var tAfterRemovingComplT = this.tasks.filter(function(element) {
+            // var ch_tSet = this.tasks.reduce(function(previous, element) {
+            //     previous[element] = true;
+            //     return previous;
+            //  }, {});
+            //  var filteredActive = this.allTasks.filter(function(element) {
+            //    return !(element in ch_tSet);
+            //  });
+            // var checked_ts = this.checked_tasks;
+            console.log(this.allTasks);
+            console.log(this.tasks);
+            console.log(this.checked_tasks);
+            // console.log(filteredActive);
+            var filteredActive = this.allTasks.filter(function(element) {
                 return ch_t.indexOf(element) === -1;
             });
-            this.tasks = tAfterRemovingComplT; 
+            console.log("All tasks: ", this.allTasks);
+            console.log("Active tasks: ", this.tasks);
+            console.log("Checked tasks: ", this.checked_tasks);
+            console.log("Filtered Active tasks:", filteredActive);
+            this.tasks = filteredActive; 
+            // this.allTasks = this.tasks;
+            this.isPressedBtn = 3;
+
         },
         showAllTasks:function(tasks){
-            console.log("Show all tasks!");
-            this.allTasks = todoStorage.fetch();
-
-        }
+            console.log("Show all tasks!", this.allTasks);
+            this.isPressedBtn = 1;
+        },
+        funcao: function(todo){
+            this.idDefine = todo.id;
+          },
+          SaveEditedValue: function(todo){
+            this.idDefine = todo.id-1.1;
+            todoStorage.save(this.tasks);
+       }
             
     },
     mounted: function() {
+        // this.allTasks = todoStorage.fetch();
         this.showAllTasks();
         // console.log(this.checked_tasks);
         // console.log(this.checked_tasks);
